@@ -8,12 +8,7 @@ const JWTService = {
   },
 
   verify: ({ token }, callback) =>
-    JWT.verify(
-      token,
-      process.env.JWT_SECRET_KEY,
-      { issuer: JWTService.ISSUER, audience: JWTService.AUDIENCE },
-      callback
-    ),
+    JWT.verify(token, process.env.JWT_SECRET_KEY, callback),
 };
 
 module.exports = JWTService;

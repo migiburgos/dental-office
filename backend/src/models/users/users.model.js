@@ -1,5 +1,15 @@
 const Users = require("./users.mongo");
 
+async function findById(userId) {
+  const user = await Users.findById(userId);
+
+  if (user) {
+    return user;
+  }
+
+  return null;
+}
+
 async function findByUsername(username) {
   const user = await Users.findOne({
     username: username.toLowerCase(),
@@ -24,4 +34,5 @@ async function createUser(username, password) {
 module.exports = {
   findByUsername,
   createUser,
+  findById,
 };

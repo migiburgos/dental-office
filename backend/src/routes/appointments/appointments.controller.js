@@ -1,16 +1,29 @@
 const {
   createAppointment,
+  isAppointmentAvailable,
   fetchAppointmentsByUserId,
 } = require("../../models/appointments/appointments.model");
 const UsersModel = require("../../models/users/users.model");
 const DoctorsModel = require("../../models/doctors/doctors.model");
 const ServicseModel = require("../../models/services/services.model");
 
+async function httpFetchAppointments(req, res) {
+  const userId = req.context;
+
+  const appointments = await fetchAppointmentsByUserId(userId);
+
+  return res.status(200).json({
+    appointments,
+    message: "Retrieved appointments successfully!",
+  });
+}
+
 async function httpCreateAppointment(req, res) {
-  const { username, doctorName, serviceTitle, day, time } = req.body;
+  const { doctorName, serviceTitle, day, time } = req.body;
+  const userId = req.context;
 
   // validate
-  if (!username || !doctorName || !serviceTitle || !day || !time) {
+  if (!doctorName || !serviceTitle || !day || !time) {
     return res.status(400).json({
       error: {
         message: "Missing required appointment properties",
@@ -19,7 +32,7 @@ async function httpCreateAppointment(req, res) {
   }
 
   // check if user exists
-  const user = await UsersModel.findByUsername(username);
+  const user = await UsersModel.findById(userId);
   if (!user) {
     return res.status(400).json({
       error: {
@@ -82,6 +95,22 @@ async function httpCreateAppointment(req, res) {
     });
   }
 
+  // check if appointment is available
+  const isAppointmentExists = isAppointmentAvailable({
+    userId: user.id,
+    serviceId: service.id,
+    doctorId: doctor.id,
+    day: day,
+    time: time,
+  });
+  if (isAppointmentExists) {
+    return res.status(400).json({
+      error: {
+        message: "This appointment is no longer available",
+      },
+    });
+  }
+
   // create appointment
   const appointment = await createAppointment({
     user,
@@ -98,5 +127,6 @@ async function httpCreateAppointment(req, res) {
 }
 
 module.exports = {
+  httpFetchAppointments,
   httpCreateAppointment,
 };
