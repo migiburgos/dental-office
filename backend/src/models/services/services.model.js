@@ -1,5 +1,5 @@
 const Services = require("./services.mongo");
-const Doctors = require("../doctors/doctors.model");
+const DoctorsModel = require("../doctors/doctors.model");
 
 async function createManyServices(data) {
   // get doctors by name
@@ -7,15 +7,17 @@ async function createManyServices(data) {
     data.map(async (service) => {
       const docs = await Promise.all(
         service.doctors.map(async (doctorName) => {
-          const doc = await Doctors.findByName(doctorName);
+          const doc = await DoctorsModel.findByName(doctorName);
           return doc;
         })
       );
 
+      console.log(docs);
       service.doctors = docs;
       return service;
     })
   );
+  console.log(servicesWithDoctor);
 
   const services = await Services.create(servicesWithDoctor);
 
@@ -28,7 +30,18 @@ async function deleteAllServices() {
   return services;
 }
 
+async function findByTitle(title) {
+  const service = await Services.findOne({ title });
+
+  if (service) {
+    return service;
+  }
+
+  return null;
+}
+
 module.exports = {
   createManyServices,
   deleteAllServices,
+  findByTitle,
 };
