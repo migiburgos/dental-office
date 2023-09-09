@@ -1,0 +1,62 @@
+{
+  "doctors": [
+    {
+      "name": "John Smith",
+      "timings": [
+        {
+          "day": "Monday",
+          "times": ["1:30 PM", "3:30 PM", "5:30 PM"]
+        },
+        {
+          "day": "Tuesday",
+          "times": ["1:30 PM", "3:30 PM", "5:30 PM"]
+        },
+        {
+          "day": "Wednesday",
+          "times": ["1:30 PM", "3:30 PM", "5:30 PM"]
+        }
+      ]
+    },
+    {
+      "name": "Leila Howe",
+      "timings": [
+        {
+          "day": "Monday",
+          "times": ["2:00 PM", "4:00 PM", "6:00 PM"]
+        },
+        {
+          "day": "Wednesday",
+          "times": ["2:00 PM", "4:00 PM", "6:00 PM"]
+        },
+        {
+          "day": "Friday",
+          "times": ["2:00 PM", "4:00 PM", "6:00 PM"]
+        }
+      ]
+    },
+    {
+      "name": "Bobby Drake",
+      "timings": [
+        {
+          "day": "Tuesday",
+          "times": ["9:30 AM", "11:30 AM", "1:30 PM"]
+        },
+        {
+          "day": "Thursday",
+          "times": ["9:30 AM", "11:30 AM", "1:30 PM"]
+        },
+        {
+          "day": "Friday",
+          "times": ["9:30 AM", "11:30 AM", "1:30 PM"]
+        }
+      ]
+    }
+  ],
+  "services": [
+    {
+      "title": "",
+      "description": "",
+      "doctors": []
+    }
+  ]
+}
