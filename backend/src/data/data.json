@@ -54,9 +54,19 @@
   ],
   "services": [
     {
-      "title": "",
-      "description": "",
-      "doctors": []
+      "title": "Service 1",
+      "description": "Lorem Ipsum alskjdaskd aklsjdklasjd  kldklas jads",
+      "doctors": ["Bobby Drake", "Leila Howe", "John Smith"]
+    },
+    {
+      "title": "Service 2",
+      "description": "Lorem Ipsum alskjdaskd aklsjdklasjd  kldklas jads",
+      "doctors": ["Leila Howe", "John Smith"]
+    },
+    {
+      "title": "Service 3",
+      "description": "Lorem Ipsum alskjdaskd aklsjdklasjd  kldklas jads",
+      "doctors": ["John Smith"]
     }
   ]
 }

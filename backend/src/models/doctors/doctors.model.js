@@ -12,7 +12,18 @@ async function deleteAllDoctors(data) {
   return doctors;
 }
 
+async function findByName(name) {
+  const doctor = await Doctors.findOne({ name });
+
+  if (doctor) {
+    return doctor;
+  }
+
+  return null;
+}
+
 module.exports = {
   createManyDoctors,
   deleteAllDoctors,
+  findByName,
 };
