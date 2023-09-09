@@ -1,9 +1,11 @@
 const express = require("express");
 
+const api = require("./routes/api");
+
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
+app.use(express.json());
+
+app.use("/v1", api);
 
 module.exports = app;
