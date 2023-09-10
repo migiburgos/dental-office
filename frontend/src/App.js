@@ -7,13 +7,15 @@ import Toolbar from "@mui/material/Toolbar";
 import Navbar from "./components/Navbar";
 
 import Home from "./pages/Home";
+import Booking from "./pages/Booking";
 
 function App() {
   return (
     <ScopedCssBaseline>
       <Navbar />
       <Toolbar />
-      <Home />
+      {/* <Home /> */}
+      <Booking />
     </ScopedCssBaseline>
   );
 }

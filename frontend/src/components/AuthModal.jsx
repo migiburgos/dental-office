@@ -1,15 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-  Container,
-  Typography,
-  Tabs,
-  Tab,
-  Box,
-  Button,
-  Grid,
-  Modal,
-  TextField,
-} from "@mui/material";
+import React, { useState } from "react";
+import { Tabs, Tab, Box, Button, Modal, TextField } from "@mui/material";
 import { SectionTitle } from "../components";
 
 const style = {

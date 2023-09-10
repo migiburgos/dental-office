@@ -11,7 +11,11 @@ export default function Intro({ openModal }) {
   return (
     <Container
       maxWidth="lg"
-      sx={{ position: "relative", marginTop: "6rem", marginBottom: "8rem" }}
+      sx={{
+        position: "relative",
+        mt: 12,
+        mb: 16,
+      }}
     >
       {/* <Box sx={{ bgcolor: "#cfe8fc", height: "200vh" }} /> */}
       <Box sx={{ flexGrow: 1 }}>
@@ -27,10 +31,7 @@ export default function Intro({ openModal }) {
             }}
           >
             <SectionTitle>Jose's Dental Clinic</SectionTitle>
-            <Typography
-              variant="h5"
-              sx={{ fontWeight: "regular", marginBottom: "4rem" }}
-            >
+            <Typography variant="h5" sx={{ fontWeight: "regular", mb: 8 }}>
               Welcome to Jose’s Dental Clinic – your trusted destination for
               top-notch dental care. Our experienced team is dedicated to
               crafting healthy, beautiful smiles in a welcoming,
@@ -53,7 +54,7 @@ export default function Intro({ openModal }) {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              paddingLeft: "2rem",
+              pl: 4,
             }}
           >
             <Image
