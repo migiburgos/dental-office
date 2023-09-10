@@ -2,7 +2,10 @@ const Services = require("./services.mongo");
 const DoctorsModel = require("../doctors/doctors.model");
 
 async function fetchAll() {
-  const service = await Services.find();
+  const service = await Services.find().populate({
+    path: "doctors",
+    select: "name",
+  });
 
   if (service) {
     return service;

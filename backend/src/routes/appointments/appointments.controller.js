@@ -77,7 +77,7 @@ async function httpCreateAppointment(req, res) {
   }
 
   // check if appointment is available
-  const isAppointmentExists = isAppointmentAvailable({
+  const isAppointmentExists = await isAppointmentAvailable({
     userId: user.id,
     serviceId: service.id,
     doctorId: doctor.id,
@@ -135,6 +135,13 @@ async function httpUpdateAppointments(req, res) {
   }
 
   const appointment = await updateAppointments(appointmentId, { day, time });
+  if (!appointment) {
+    return res.status(400).json({
+      error: {
+        message: "Appointment does not exist",
+      },
+    });
+  }
 
   return res.status(200).json({
     appointment,

@@ -50,12 +50,16 @@ async function createAppointment({ user, service, doctor, day, time }) {
   return appointment;
 }
 
-async function updateAppointments(appointmentId) {
+async function updateAppointments(appointmentId, newData) {
+  const huh = await Appointments.findOne({
+    _id: new ObjectId(appointmentId),
+  });
+
   const appointments = await Appointments.findOneAndUpdate(
     {
       _id: new ObjectId(appointmentId),
     },
-    { day: "Sunday" },
+    newData,
     { new: true }
   )
     .populate({ path: "user", select: "username" })
