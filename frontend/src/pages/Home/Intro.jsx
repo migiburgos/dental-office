@@ -1,12 +1,13 @@
 import React from "react";
 import { Container, Box, Grid, Typography, Button } from "@mui/material";
 import styled from "@emotion/styled";
+import { SectionTitle } from "../../components";
 
 const Image = styled.img`
   width: 100%;
 `;
 
-export default function Intro() {
+export default function Intro({ openModal }) {
   return (
     <Container
       maxWidth="lg"
@@ -25,12 +26,7 @@ export default function Intro() {
               justifyContent: "center",
             }}
           >
-            <Typography
-              variant="h2"
-              sx={{ fontWeight: "bold", marginBottom: "3rem" }}
-            >
-              Jose's Dental Clinic
-            </Typography>
+            <SectionTitle>Jose's Dental Clinic</SectionTitle>
             <Typography
               variant="h5"
               sx={{ fontWeight: "regular", marginBottom: "4rem" }}
@@ -44,6 +40,7 @@ export default function Intro() {
               variant="contained"
               size="large"
               sx={{ width: 256, maxWidth: "100%", height: 64 }}
+              onClick={openModal}
             >
               Schedule Appointment
             </Button>

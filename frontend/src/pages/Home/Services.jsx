@@ -9,12 +9,13 @@ import {
   Grid,
 } from "@mui/material";
 import styled from "@emotion/styled";
+import { SectionTitle } from "../../components";
 
 const Image = styled.img`
   width: 100%;
 `;
 
-export default function Services() {
+export default function Services({ openModal }) {
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -24,21 +25,22 @@ export default function Services() {
       maxWidth="lg"
       sx={{ position: "relative", marginBottom: "8rem" }}
     >
-      <Typography
-        variant="h2"
-        sx={{ fontWeight: "bold", marginBottom: "3rem" }}
-      >
-        Services
-      </Typography>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <SectionTitle>Services</SectionTitle>
+
+      <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 3 }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab label="Dental Cleanings" />
           <Tab label="Check-ups" />
           <Tab label="Tooth Extractions" />
         </Tabs>
       </Box>
-      <Box sx={{ flexGrow: 1, backgroundColor: "#D9D9D9", p: 8 }}>
-        <Grid container spacing={0}>
+
+      <Box sx={{ flexGrow: 1, backgroundColor: "#EEEEEE", p: 8 }}>
+        <Grid
+          container
+          spacing={0}
+          sx={value % 2 && { flexDirection: "row-reverse" }}
+        >
           <Grid
             item
             xs={7}
@@ -72,6 +74,7 @@ export default function Services() {
               variant="contained"
               size="large"
               sx={{ width: 255, maxWidth: "100%" }}
+              onClick={openModal}
             >
               Schedule Appointment
             </Button>
@@ -79,13 +82,16 @@ export default function Services() {
           <Grid
             item
             xs={5}
-            sx={{
-              //   background: "orange",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              paddingLeft: "2rem",
-            }}
+            sx={[
+              {
+                // background: "orange",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                // paddingLeft: "2rem",
+              },
+              value % 2 ? { pr: 4 } : { pl: 4 },
+            ]}
           >
             <Image
               src={"/intro_photo.png"}
