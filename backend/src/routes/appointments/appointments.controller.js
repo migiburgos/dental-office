@@ -2,10 +2,11 @@ const {
   createAppointment,
   isAppointmentAvailable,
   fetchAppointmentsByUserId,
+  updateAppointments,
 } = require("../../models/appointments/appointments.model");
 const UsersModel = require("../../models/users/users.model");
-const DoctorsModel = require("../../models/doctors/doctors.model");
 const ServicseModel = require("../../models/services/services.model");
+const { checkDoctorTimeDayAvailable } = require("./appointments.helper");
 
 async function httpFetchAppointments(req, res) {
   const userId = req.context;
@@ -41,12 +42,16 @@ async function httpCreateAppointment(req, res) {
     });
   }
 
-  // check if doctor exists
-  const doctor = await DoctorsModel.findByName(doctorName);
-  if (!doctor) {
+  // check if doctor, time, and day is available
+  const { doctor, error } = await checkDoctorTimeDayAvailable({
+    doctorName,
+    day,
+    time,
+  });
+  if (error) {
     return res.status(400).json({
       error: {
-        message: "Doctor does not exist",
+        message: error.message,
       },
     });
   }
@@ -71,30 +76,6 @@ async function httpCreateAppointment(req, res) {
     });
   }
 
-  // check if day in doctor timings
-  const dayInDoctorTiming = doctor.timings.filter(
-    (timing) => timing.day === day
-  );
-  if (dayInDoctorTiming.length < 1) {
-    return res.status(400).json({
-      error: {
-        message: "Doctor does not accept appointments on this day",
-      },
-    });
-  }
-
-  // check if time in doctor timings
-  const timeInDoctorTiming = dayInDoctorTiming[0].times.filter(
-    (t) => t === time
-  );
-  if (timeInDoctorTiming.length < 1) {
-    return res.status(400).json({
-      error: {
-        message: "Doctor does not accept appointments on this time",
-      },
-    });
-  }
-
   // check if appointment is available
   const isAppointmentExists = isAppointmentAvailable({
     userId: user.id,
@@ -106,7 +87,8 @@ async function httpCreateAppointment(req, res) {
   if (isAppointmentExists) {
     return res.status(400).json({
       error: {
-        message: "This appointment is no longer available",
+        message:
+          "This appointment is no longer available. Choose another doctor, day, or time.",
       },
     });
   }
@@ -126,7 +108,42 @@ async function httpCreateAppointment(req, res) {
   });
 }
 
+async function httpUpdateAppointments(req, res) {
+  const appointmentId = req.params.id;
+  const { doctorName, day, time } = req.body;
+
+  if (!appointmentId || !day || !time) {
+    return res.status(400).json({
+      error: {
+        message: "Missing required appointment property",
+      },
+    });
+  }
+
+  // check if doctor time and day is available
+  const { error } = await checkDoctorTimeDayAvailable({
+    doctorName,
+    day,
+    time,
+  });
+  if (error) {
+    return res.status(400).json({
+      error: {
+        message: error.message,
+      },
+    });
+  }
+
+  const appointment = await updateAppointments(appointmentId, { day, time });
+
+  return res.status(200).json({
+    appointment,
+    message: "Updated appointment successfully!",
+  });
+}
+
 module.exports = {
   httpFetchAppointments,
   httpCreateAppointment,
+  httpUpdateAppointments,
 };

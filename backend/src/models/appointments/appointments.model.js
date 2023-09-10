@@ -25,7 +25,7 @@ async function isAppointmentAvailable({
 }) {
   const appointments = await Appointments.findOne({
     user: new ObjectId(userId),
-    service: new ObjectId(serviceId),
+    // service: new ObjectId(serviceId),
     doctor: new ObjectId(doctorId),
     day,
     time,
@@ -50,8 +50,28 @@ async function createAppointment({ user, service, doctor, day, time }) {
   return appointment;
 }
 
+async function updateAppointments(appointmentId) {
+  const appointments = await Appointments.findOneAndUpdate(
+    {
+      _id: new ObjectId(appointmentId),
+    },
+    { day: "Sunday" },
+    { new: true }
+  )
+    .populate({ path: "user", select: "username" })
+    .populate({ path: "doctor", select: "name" })
+    .populate({ path: "service", select: "title" });
+
+  if (appointments) {
+    return appointments;
+  }
+
+  return null;
+}
+
 module.exports = {
   createAppointment,
   fetchAppointmentsByUserId,
   isAppointmentAvailable,
+  updateAppointments,
 };
