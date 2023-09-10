@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar";
 
 import Home from "./pages/Home";
 import Booking from "./pages/Booking";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
       <Navbar />
       <Toolbar />
       {/* <Home /> */}
-      <Booking />
+      {/* <Booking /> */}
+      <Dashboard />
     </ScopedCssBaseline>
   );
 }
