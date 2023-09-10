@@ -73,9 +73,16 @@ async function updateAppointments(appointmentId, newData) {
   return null;
 }
 
+async function deleteAllAppointments() {
+  const appointments = await Appointments.deleteMany();
+
+  return appointments;
+}
+
 module.exports = {
   createAppointment,
   fetchAppointmentsByUserId,
   isAppointmentAvailable,
   updateAppointments,
+  deleteAllAppointments,
 };
