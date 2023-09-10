@@ -45,9 +45,16 @@ async function updateUser(userId, newData) {
   return user;
 }
 
+async function deleteGeneratedUser() {
+  const user = await Users.deleteOne({ username: "aliya" });
+
+  return user;
+}
+
 module.exports = {
   findByUsername,
   createUser,
   findById,
   updateUser,
+  deleteGeneratedUser,
 };

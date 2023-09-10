@@ -3,16 +3,42 @@ const {
   isAppointmentAvailable,
   fetchAppointmentsByUserId,
   updateAppointments,
+  fetchAppointmentsByDoctor,
 } = require("../../models/appointments/appointments.model");
 const UsersModel = require("../../models/users/users.model");
-const ServicseModel = require("../../models/services/services.model");
+const DoctorsModel = require("../../models/doctors/doctors.model");
+const ServicesModel = require("../../models/services/services.model");
 const { checkDoctorTimeDayAvailable } = require("./appointments.helper");
 
 async function httpFetchAppointments(req, res) {
   const userId = req.context;
+  const { doctor: doctorName, service: serviceTitle } = req.query;
 
-  const appointments = await fetchAppointmentsByUserId(userId);
+  let appointments;
 
+  if (doctorName) {
+    // check if doctor exists
+    const doctor = await DoctorsModel.findByName(doctorName);
+    if (!doctor) {
+      return res.status(400).json({
+        error: {
+          message: "Doctor does not exist",
+        },
+      });
+    }
+
+    appointments = await fetchAppointmentsByDoctor(doctor.id);
+  } else {
+    appointments = await fetchAppointmentsByUserId(userId);
+  }
+
+  return res.status(200).json({
+    appointments,
+    message: "Retrieved appointments successfully!",
+  });
+}
+
+async function httpFetchAppointmentsByServiceAndDoctor(req, res) {
   return res.status(200).json({
     appointments,
     message: "Retrieved appointments successfully!",
@@ -57,7 +83,7 @@ async function httpCreateAppointment(req, res) {
   }
 
   // check if service exists
-  const service = await ServicseModel.findByTitle(serviceTitle);
+  const service = await ServicesModel.findByTitle(serviceTitle);
   if (!service) {
     return res.status(400).json({
       error: {
@@ -153,4 +179,5 @@ module.exports = {
   httpFetchAppointments,
   httpCreateAppointment,
   httpUpdateAppointments,
+  httpFetchAppointmentsByServiceAndDoctor,
 };
