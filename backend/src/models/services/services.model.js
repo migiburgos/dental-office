@@ -1,6 +1,16 @@
 const Services = require("./services.mongo");
 const DoctorsModel = require("../doctors/doctors.model");
 
+async function fetchAll() {
+  const service = await Services.find();
+
+  if (service) {
+    return service;
+  }
+
+  return null;
+}
+
 async function createManyServices(data) {
   // get doctors by name
   const servicesWithDoctor = await Promise.all(
@@ -41,6 +51,7 @@ async function findByTitle(title) {
 }
 
 module.exports = {
+  fetchAll,
   createManyServices,
   deleteAllServices,
   findByTitle,
