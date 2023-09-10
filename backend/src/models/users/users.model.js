@@ -1,3 +1,4 @@
+const ObjectId = require("mongoose").Types.ObjectId;
 const Users = require("./users.mongo");
 
 async function findById(userId) {
@@ -22,11 +23,24 @@ async function findByUsername(username) {
   return null;
 }
 
-async function createUser(username, password) {
+async function createUser(name, username, password) {
   const user = await Users.create({
+    name: name,
     username: username.toLowerCase(),
     password: password,
   });
+
+  return user;
+}
+
+async function updateUser(userId, newData) {
+  const user = await Users.findOneAndUpdate(
+    {
+      _id: new ObjectId(userId),
+    },
+    newData,
+    { new: true }
+  );
 
   return user;
 }
@@ -35,4 +49,5 @@ module.exports = {
   findByUsername,
   createUser,
   findById,
+  updateUser,
 };

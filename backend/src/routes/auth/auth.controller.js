@@ -6,10 +6,10 @@ const Encrypt = require("../../utils/encryption");
 const JWTService = require("../../utils/jwt");
 
 async function httpRegister(req, res) {
-  const { username, password } = req.body;
+  const { name, username, password } = req.body;
 
   // validate
-  if (!username || !password) {
+  if (!name || !username || !password) {
     return res.status(400).json({
       error: {
         message: "Missing required user property",
@@ -31,7 +31,7 @@ async function httpRegister(req, res) {
   const encyrptedPassword = await Encrypt.encryptPassword(password);
 
   // create user
-  const user = await createUser(username, encyrptedPassword);
+  const user = await createUser(name, username, encyrptedPassword);
 
   // create access token
   const payload = { user: user._id };
