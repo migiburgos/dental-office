@@ -36,6 +36,20 @@ export const login = createAsyncThunk(
   }
 );
 
+export const fetchMyInfo = createAsyncThunk(
+  "auth/fetchMyInfo",
+  async (body, { rejectWithValue }) => {
+    try {
+      const data = await authAPI.fetchMyInfo(body);
+
+      return data.user;
+    } catch (error) {
+      // console.error("auth.action -> fetchMyInfo -> error", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const logout = createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue, dispatch }) => {

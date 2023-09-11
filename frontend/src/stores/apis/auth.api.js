@@ -11,3 +11,8 @@ export const login = async (body) => {
   const response = await axiosInstance.post(`${PATH}/login`, body);
   return response.data;
 };
+
+export const fetchMyInfo = async (body) => {
+  const response = await axiosInstance.get(`users/`, body);
+  return response.data;
+};
