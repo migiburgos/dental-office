@@ -36,7 +36,7 @@ export const setAxiosAuthToken = (token) => {
 
 const onFulfilledRequest = (response) => response;
 const onRejectedResponse = (error) => {
-  console.error("onRejectedResponse =========>", error);
+  // console.error("onRejectedResponse =========>", error);
   if (!error.response) {
     //console.error('inside response');
     return Promise.reject(checkInternetError);

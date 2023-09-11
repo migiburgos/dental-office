@@ -47,17 +47,22 @@ export default function Services() {
             <Grid
               container
               spacing={0}
-              sx={{ flexDirection: selectedIndex % 2 ? "row-reverse" : "row" }}
+              sx={{
+                flexDirection: selectedIndex % 2 ? "row" : "row-reverse",
+              }}
             >
               <Grid
                 item
-                xs={7}
-                sx={{
-                  //   background: "yellow",
-                  display: "flex",
-                  flexDirection: "column",
-                  //   justifyContent: "center",
-                }}
+                xs={7.5}
+                sx={[
+                  {
+                    // background: "yellow",
+                    display: "flex",
+                    flexDirection: "column",
+                    //   justifyContent: "center",
+                  },
+                  selectedIndex % 2 ? { pr: 8 } : { pl: 8 },
+                ]}
               >
                 <Typography
                   variant="h4"
@@ -79,16 +84,13 @@ export default function Services() {
               </Grid>
               <Grid
                 item
-                xs={5}
-                sx={[
-                  {
-                    // background: "orange",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  },
-                  selectedIndex % 2 ? { pr: 4 } : { pl: 4 },
-                ]}
+                xs={4.5}
+                sx={{
+                  // background: "orange",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               >
                 <Image
                   src={"/intro_photo.png"}

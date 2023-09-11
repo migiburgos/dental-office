@@ -65,13 +65,16 @@ export default function Dashboard() {
         sx={{
           display: "flex",
           alignItems: "center",
-          justifyContent: appointments ? "flex-end" : "center",
+          justifyContent:
+            appointments && appointments.length > 0 ? "flex-end" : "center",
           mb: 2,
         }}
       >
-        <ButtonSchedule type={appointments ? "regular" : "large"} />
+        <ButtonSchedule
+          type={appointments && appointments.length > 0 ? "regular" : "large"}
+        />
       </Box>
-      {appointments && (
+      {appointments && appointments.length > 0 && (
         <TableContainer sx={{ mb: 12 }}>
           <Table>
             <TableHead>

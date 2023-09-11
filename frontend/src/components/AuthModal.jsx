@@ -7,9 +7,8 @@ import { authActions } from "../stores/actions";
 import { useSnack } from "../context/SnackContext";
 import { useAuthModal } from "../context/AuthModalContext";
 
-const { login } = authActions;
-
 export default function AuthModal() {
+  const { login, register } = authActions;
   const dispatch = useDispatch();
   const { isModalShowing, closeModal } = useAuthModal();
   const { showErrorAlert, showSuccessAlert } = useSnack();
@@ -24,16 +23,41 @@ export default function AuthModal() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    setName("");
+    setUsername("");
+    setPassword("");
+    setConfirmPassword("");
   };
 
-  const onSubmit = () => {
+  const handleLogin = () => {
+    if (!username || !password) {
+      return showErrorAlert("Username and password are required");
+    }
     dispatch(login({ username, password }));
+    setName("");
+    setUsername("");
+    setPassword("");
+    setConfirmPassword("");
+  };
+
+  const handleRegister = () => {
+    if (!name || !username || !password || !confirmPassword) {
+      return showErrorAlert("All fields are required");
+    }
+    if (password !== confirmPassword) {
+      return showErrorAlert("Passwords do not match");
+    }
+    dispatch(register({ name, username, password }));
+    setName("");
+    setUsername("");
+    setPassword("");
+    setConfirmPassword("");
   };
 
   useEffect(() => {
     if (auth) {
       closeModal();
-      showSuccessAlert("Login Successful!");
+      showSuccessAlert("Authentication Successful!");
     }
   }, [auth]);
 
@@ -110,7 +134,7 @@ export default function AuthModal() {
           variant="contained"
           size="large"
           sx={{ mb: 5 }}
-          onClick={onSubmit}
+          onClick={value === 0 ? handleLogin : handleRegister}
         >
           {value === 0 ? "Login" : "Register"}
         </Button>
