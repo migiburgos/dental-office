@@ -2,12 +2,15 @@ import React from "react";
 import { Container, Box, Grid, Typography, Button } from "@mui/material";
 import styled from "@emotion/styled";
 import { SectionTitle } from "../../components";
+import { useSnack } from "../../context/SnackContext";
 
 const Image = styled.img`
   width: 100%;
 `;
 
 export default function Intro({ openModal }) {
+  const { showErrorAlert, showSuccessAlert } = useSnack();
+
   return (
     <Container
       maxWidth="lg"
@@ -41,7 +44,10 @@ export default function Intro({ openModal }) {
               variant="contained"
               size="large"
               sx={{ width: 256, maxWidth: "100%", height: 64 }}
-              onClick={openModal}
+              onClick={() => {
+                // openModal();
+                showSuccessAlert();
+              }}
             >
               Schedule Appointment
             </Button>
