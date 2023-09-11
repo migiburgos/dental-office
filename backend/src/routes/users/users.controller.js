@@ -1,4 +1,4 @@
-const { updateUser } = require("../../models/users/users.model");
+const { updateUser, findById } = require("../../models/users/users.model");
 
 async function httpUpdateUser(req, res) {
   const userId = req.context;
@@ -21,6 +21,18 @@ async function httpUpdateUser(req, res) {
   });
 }
 
+async function httpFetchMyUser(req, res) {
+  const userId = req.context;
+
+  const user = await findById(userId);
+
+  return res.status(200).json({
+    user: user,
+    message: "Retrieved user successfully!",
+  });
+}
+
 module.exports = {
   httpUpdateUser,
+  httpFetchMyUser,
 };

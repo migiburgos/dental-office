@@ -46,7 +46,6 @@ async function httpRegister(req, res) {
 
 async function httpLogin(req, res) {
   const { username, password } = req.body;
-  console.log("we inside?", username, password);
 
   // validate
   if (!username || !password) {
