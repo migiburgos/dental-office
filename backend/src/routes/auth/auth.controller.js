@@ -59,7 +59,6 @@ async function httpLogin(req, res) {
   // check if user exists
   const user = await findByUsername(username);
   if (!user) {
-    console.log("Username or password is incorrect");
     return res.status(400).json({
       error: {
         message: "Username or password is incorrect",

@@ -93,7 +93,6 @@ async function createManyAppointments(data) {
       return appointment;
     })
   );
-  console.log(appointmentsWithData);
 
   const appointment = await Appointments.create(appointmentsWithData);
 
@@ -117,6 +116,14 @@ async function fetchAppointmentsByDoctor(doctorId) {
   return null;
 }
 
+async function deleteAppointmentById(appointmentId) {
+  const appointment = await Appointments.deleteOne({
+    _id: new ObjectId(appointmentId),
+  });
+
+  return appointment;
+}
+
 module.exports = {
   createAppointment,
   fetchAppointmentsByUserId,
@@ -125,4 +132,5 @@ module.exports = {
   deleteAllAppointments,
   createManyAppointments,
   fetchAppointmentsByDoctor,
+  deleteAppointmentById,
 };

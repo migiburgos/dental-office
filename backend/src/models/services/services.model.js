@@ -24,12 +24,10 @@ async function createManyServices(data) {
         })
       );
 
-      console.log(docs);
       service.doctors = docs;
       return service;
     })
   );
-  console.log(servicesWithDoctor);
 
   const services = await Services.create(servicesWithDoctor);
 

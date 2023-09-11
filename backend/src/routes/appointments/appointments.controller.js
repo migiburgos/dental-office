@@ -4,6 +4,7 @@ const {
   fetchAppointmentsByUserId,
   updateAppointments,
   fetchAppointmentsByDoctor,
+  deleteAppointmentById,
 } = require("../../models/appointments/appointments.model");
 const UsersModel = require("../../models/users/users.model");
 const DoctorsModel = require("../../models/doctors/doctors.model");
@@ -32,13 +33,6 @@ async function httpFetchAppointments(req, res) {
     appointments = await fetchAppointmentsByUserId(userId);
   }
 
-  return res.status(200).json({
-    appointments,
-    message: "Retrieved appointments successfully!",
-  });
-}
-
-async function httpFetchAppointmentsByServiceAndDoctor(req, res) {
   return res.status(200).json({
     appointments,
     message: "Retrieved appointments successfully!",
@@ -175,9 +169,35 @@ async function httpUpdateAppointments(req, res) {
   });
 }
 
+async function httpDeleteAppointmentById(req, res) {
+  const appointmentId = req.params.id;
+
+  if (!appointmentId) {
+    return res.status(400).json({
+      error: {
+        message: "Missing appointmentId",
+      },
+    });
+  }
+
+  const appointment = await deleteAppointmentById(appointmentId);
+  if (!appointment) {
+    return res.status(400).json({
+      error: {
+        message: "Appointment does not exist",
+      },
+    });
+  }
+
+  return res.status(200).json({
+    appointment,
+    message: "Updated appointment successfully!",
+  });
+}
+
 module.exports = {
   httpFetchAppointments,
   httpCreateAppointment,
   httpUpdateAppointments,
-  httpFetchAppointmentsByServiceAndDoctor,
+  httpDeleteAppointmentById,
 };
