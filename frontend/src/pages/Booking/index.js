@@ -14,147 +14,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { SectionTitle } from "../../components";
-
-const services = [
-  {
-    _id: "64fdf072295805991b69df55",
-    title: "Service 1",
-    description: "Lorem Ipsum alskjdaskd aklsjdklasjd  kldklas jads",
-    doctors: [
-      {
-        _id: "64fdf072295805991b69df4b",
-        name: "Bobby Drake",
-        timings: [
-          {
-            day: "Tuesday",
-            times: ["9:30 AM", "11:30 AM", "1:30 PM"],
-          },
-          {
-            day: "Thursday",
-            times: ["9:30 AM", "11:30 AM", "1:30 PM"],
-          },
-          {
-            day: "Friday",
-            times: ["9:30 AM", "11:30 AM", "1:30 PM"],
-          },
-        ],
-        __v: 0,
-      },
-      {
-        _id: "64fdf072295805991b69df4a",
-        name: "Leila Howe",
-        timings: [
-          {
-            day: "Monday",
-            times: ["2:00 PM", "4:00 PM", "6:00 PM"],
-          },
-          {
-            day: "Wednesday",
-            times: ["2:00 PM", "4:00 PM", "6:00 PM"],
-          },
-          {
-            day: "Friday",
-            times: ["2:00 PM", "4:00 PM", "6:00 PM"],
-          },
-        ],
-        __v: 0,
-      },
-      {
-        _id: "64fdf072295805991b69df49",
-        name: "John Smith",
-        timings: [
-          {
-            day: "Monday",
-            times: ["1:30 PM", "3:30 PM", "5:30 PM"],
-          },
-          {
-            day: "Tuesday",
-            times: ["1:30 PM", "3:30 PM", "5:30 PM"],
-          },
-          {
-            day: "Wednesday",
-            times: ["1:30 PM", "3:30 PM", "5:30 PM"],
-          },
-        ],
-        __v: 0,
-      },
-    ],
-    __v: 0,
-  },
-  {
-    _id: "64fdf072295805991b69df56",
-    title: "Service 2",
-    description: "Lorem Ipsum alskjdaskd aklsjdklasjd  kldklas jads",
-    doctors: [
-      {
-        _id: "64fdf072295805991b69df4a",
-        name: "Leila Howe",
-        timings: [
-          {
-            day: "Monday",
-            times: ["2:00 PM", "4:00 PM", "6:00 PM"],
-          },
-          {
-            day: "Wednesday",
-            times: ["2:00 PM", "4:00 PM", "6:00 PM"],
-          },
-          {
-            day: "Friday",
-            times: ["2:00 PM", "4:00 PM", "6:00 PM"],
-          },
-        ],
-        __v: 0,
-      },
-      {
-        _id: "64fdf072295805991b69df49",
-        name: "John Smith",
-        timings: [
-          {
-            day: "Monday",
-            times: ["1:30 PM", "3:30 PM", "5:30 PM"],
-          },
-          {
-            day: "Tuesday",
-            times: ["1:30 PM", "3:30 PM", "5:30 PM"],
-          },
-          {
-            day: "Wednesday",
-            times: ["1:30 PM", "3:30 PM", "5:30 PM"],
-          },
-        ],
-        __v: 0,
-      },
-    ],
-    __v: 0,
-  },
-  {
-    _id: "64fdf072295805991b69df57",
-    title: "Service 3",
-    description: "Lorem Ipsum alskjdaskd aklsjdklasjd  kldklas jads",
-    doctors: [
-      {
-        _id: "64fdf072295805991b69df49",
-        name: "John Smith",
-        timings: [
-          {
-            day: "Monday",
-            times: ["1:30 PM", "3:30 PM", "5:30 PM"],
-          },
-          {
-            day: "Tuesday",
-            times: ["1:30 PM", "3:30 PM", "5:30 PM"],
-          },
-          {
-            day: "Wednesday",
-            times: ["1:30 PM", "3:30 PM", "5:30 PM"],
-          },
-        ],
-        __v: 0,
-      },
-    ],
-    __v: 0,
-  },
-];
+import { useSelector } from "react-redux";
 
 const appointmentsByDoctor = [
   {
@@ -202,6 +62,8 @@ const appointmentsByDoctor = [
 ];
 
 export default function Booking() {
+  const services = useSelector((state) => state.services.data);
+
   const [service, setService] = useState("");
   const [doctor, setDoctor] = useState("");
   const [doctorWithSlots, setDoctorWithSlots] = useState(null);
@@ -306,7 +168,7 @@ export default function Booking() {
               <em>Select a service</em>
             </MenuItem>
             {services.map((s, i) => (
-              <MenuItem id={i} value={s}>
+              <MenuItem key={i} value={s}>
                 {s.title}
               </MenuItem>
             ))}
@@ -329,7 +191,7 @@ export default function Booking() {
                 <em>Select a doctor</em>
               </MenuItem>
               {service.doctors.map((d, i) => (
-                <MenuItem id={i} value={d}>
+                <MenuItem key={i} value={d}>
                   {d.name}
                 </MenuItem>
               ))}
@@ -344,14 +206,15 @@ export default function Booking() {
           <Typography variant="h4" sx={{ mb: 4 }}>
             Available Slots
           </Typography>
-          {doctorWithSlots.timings.map(({ day: doctorDay, times }) => (
-            <Box sx={{ mb: 5 }}>
+          {doctorWithSlots.timings.map(({ day: doctorDay, times }, i) => (
+            <Box key={i} sx={{ mb: 5 }}>
               <Typography variant="h5" sx={{ mb: 2 }}>
                 {doctorDay}
               </Typography>
               <Box>
-                {times.map((doctorTime) => (
+                {times.map((doctorTime, i) => (
                   <Chip
+                    key={i}
                     label={doctorTime.time}
                     onClick={() => handleDayTime(doctorDay, doctorTime.time)}
                     variant={
