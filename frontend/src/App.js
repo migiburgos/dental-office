@@ -16,8 +16,8 @@ function App() {
       <Navbar />
       <Toolbar />
       {/* <Home /> */}
-      {/* <Booking /> */}
-      <Dashboard />
+      <Booking />
+      {/* <Dashboard /> */}
     </ScopedCssBaseline>
   );
 }
