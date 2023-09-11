@@ -12,20 +12,25 @@ import Dashboard from "./pages/Dashboard";
 
 import SnackContextProvider from "./context/SnackContext";
 import SnackBar from "./components/SnackBar";
+import AuthModalContextProvider from "./context/AuthModalContext";
+import { AuthModal } from "./components";
 
 function App() {
   return (
     <SnackContextProvider>
-      <ScopedCssBaseline>
-        <Navbar />
-        <Toolbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/schedule" element={<Booking />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Routes>
-      </ScopedCssBaseline>
-      <SnackBar />
+      <AuthModalContextProvider>
+        <ScopedCssBaseline>
+          <Navbar />
+          <Toolbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/schedule" element={<Booking />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Routes>
+        </ScopedCssBaseline>
+        <AuthModal />
+        <SnackBar />
+      </AuthModalContextProvider>
     </SnackContextProvider>
   );
 }

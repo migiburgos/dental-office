@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Tabs, Tab, Box, Button, Modal, TextField } from "@mui/material";
 import { SectionTitle } from "../components";
 
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../stores/actions";
 import { useSnack } from "../context/SnackContext";
+import { useAuthModal } from "../context/AuthModalContext";
 
 const { login } = authActions;
 
-export default function AuthModal({ isModalShowing, closeModal }) {
+export default function AuthModal() {
   const dispatch = useDispatch();
+  const { isModalShowing, closeModal } = useAuthModal();
   const { showErrorAlert, showSuccessAlert } = useSnack();
+
+  const auth = useSelector((state) => state.auth.data);
 
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
@@ -24,8 +28,14 @@ export default function AuthModal({ isModalShowing, closeModal }) {
 
   const onSubmit = () => {
     dispatch(login({ username, password }));
-    showSuccessAlert("Login Successfully!");
   };
+
+  useEffect(() => {
+    if (auth) {
+      closeModal();
+      showSuccessAlert("Login Successfully!");
+    }
+  }, [auth]);
 
   return (
     <Modal

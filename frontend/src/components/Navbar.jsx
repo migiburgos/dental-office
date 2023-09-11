@@ -15,8 +15,15 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../stores/actions";
+import { useAuthModal } from "../context/AuthModalContext";
+import { useNavigate } from "react-router-dom";
+
+const { logout } = authActions;
 
 const drawerWidth = 240;
+
 const navItems = [
   { name: "Home", link: "" },
   { name: "Schedule", link: "schedule" },
@@ -25,10 +32,20 @@ const navItems = [
 
 function DrawerAppBar(props) {
   const { window } = props;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { openModal } = useAuthModal();
+  const auth = useSelector((state) => state.auth.data);
+
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
   };
 
   const drawer = (
@@ -71,19 +88,30 @@ function DrawerAppBar(props) {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            MUI
+            Jose's Dental Clinic
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {navItems.map(({ name, link }, i) => (
-              <Button
-                key={i}
-                component={Link}
-                to={`/${link}`}
-                sx={{ color: "#fff" }}
-              >
-                {name}
+            {!auth ? (
+              <Button sx={{ color: "#fff" }} onClick={openModal}>
+                Login / Register
               </Button>
-            ))}
+            ) : (
+              <>
+                {navItems.map(({ name, link }, i) => (
+                  <Button
+                    key={i}
+                    component={Link}
+                    to={`/${link}`}
+                    sx={{ color: "#fff" }}
+                  >
+                    {name}
+                  </Button>
+                ))}
+                <Button sx={{ color: "#fff" }} onClick={handleLogout}>
+                  Logout
+                </Button>
+              </>
+            )}
           </Box>
         </Toolbar>
       </AppBar>

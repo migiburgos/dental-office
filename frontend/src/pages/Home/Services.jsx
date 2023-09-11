@@ -16,7 +16,7 @@ const Image = styled.img`
   width: 100%;
 `;
 
-export default function Services({ openModal }) {
+export default function Services() {
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -71,7 +71,7 @@ export default function Services({ openModal }) {
               hygienist carefully removes plaque, tartar, and stains from the
               teeth's surfaces.
             </Typography>
-            <ButtonSchedule openModal={openModal} />
+            <ButtonSchedule />
           </Grid>
           <Grid
             item

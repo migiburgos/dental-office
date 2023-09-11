@@ -8,7 +8,7 @@ const Image = styled.img`
   width: 100%;
 `;
 
-export default function Intro({ openModal }) {
+export default function Intro() {
   return (
     <Container
       maxWidth="lg"
@@ -38,7 +38,7 @@ export default function Intro({ openModal }) {
               crafting healthy, beautiful smiles in a welcoming,
               state-of-the-art environment.
             </Typography>
-            <ButtonSchedule type={"large"} openModal={openModal} />
+            <ButtonSchedule type={"large"} />
           </Grid>
           <Grid
             item
