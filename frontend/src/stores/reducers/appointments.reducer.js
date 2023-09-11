@@ -1,7 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { appointmentsActions } from "../actions";
-const { fetchAppointments, fetchAppointmentsByDoctor, createAppointment } =
-  appointmentsActions;
+const {
+  fetchAppointments,
+  fetchAppointmentsByDoctor,
+  createAppointment,
+  updateAppointment,
+} = appointmentsActions;
 
 const authSlice = createSlice({
   name: "appointments",
@@ -46,6 +50,18 @@ const authSlice = createSlice({
     });
     builder.addCase(createAppointment.rejected, (state, action) => {
       // console.error("auth.reducer -> createAppointment.rejected", action.payload);
+      state.error = action.payload;
+      state.loading = false;
+    });
+
+    builder.addCase(updateAppointment.fulfilled, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(updateAppointment.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(updateAppointment.rejected, (state, action) => {
+      // console.error("auth.reducer -> updateAppointment.rejected", action.payload);
       state.error = action.payload;
       state.loading = false;
     });

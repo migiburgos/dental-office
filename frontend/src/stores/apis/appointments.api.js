@@ -17,3 +17,9 @@ export const createAppointment = async (body) => {
   const response = await axiosInstance.post(`${PATH}/create`, body);
   return response.data;
 };
+
+export const updateAppointment = async (body) => {
+  const id = body.appointmentId;
+  const response = await axiosInstance.put(`${PATH}/${id}`, body);
+  return response.data;
+};

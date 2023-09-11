@@ -17,10 +17,22 @@ import { SectionTitle } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
 import { appointmentsActions } from "../../stores/actions";
 import { useSnack } from "../../context/SnackContext";
+import { useLocation, useNavigate } from "react-router-dom";
+
+function useQuery() {
+  const { search } = useLocation();
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
 
 export default function Booking() {
-  const { fetchAppointmentsByDoctor, createAppointment } = appointmentsActions;
+  const { fetchAppointmentsByDoctor, createAppointment, updateAppointment } =
+    appointmentsActions;
+
+  const query = useQuery();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const { showErrorAlert, showSuccessAlert } = useSnack();
 
   const services = useSelector((state) => state.services.data);
@@ -28,15 +40,21 @@ export default function Booking() {
     (state) => state.appointments.dataByDoctor
   );
 
+  const [appointmentId, setAppointmentId] = useState(null);
+  const [appointmentDay, setAppointmentDay] = useState(null);
+  const [appointmentTime, setAppointmentTime] = useState(null);
   const [service, setService] = useState("");
   const [doctor, setDoctor] = useState("");
   const [doctorWithSlots, setDoctorWithSlots] = useState(null);
   const [day, setDay] = useState(null);
   const [time, setTime] = useState(null);
 
+  const isUpdate = appointmentId ? true : false;
+
   const handleService = (event) => {
     setService(event.target.value);
     setDoctor("");
+    setDoctorWithSlots(null);
     setDay(null);
     setTime(null);
   };
@@ -54,8 +72,20 @@ export default function Booking() {
     setTime(time);
   };
 
-  const handleCreateAppointment = () => {
-    if (service && doctor && day && time) {
+  const handleSubmit = () => {
+    if (isUpdate && service && doctor && day && time) {
+      // update appointment
+      dispatch(
+        updateAppointment({
+          appointmentId,
+          doctorName: doctor.name,
+          day,
+          time,
+        })
+      );
+      navigate("/dashboard");
+      showSuccessAlert("Appointment Updated Successfully!");
+    } else if (service && doctor && day && time) {
       // create appointment
       dispatch(
         createAppointment({
@@ -65,11 +95,40 @@ export default function Booking() {
           time,
         })
       );
+      navigate("/dashboard");
       showSuccessAlert("Appointment Booked Successfully!");
     } else {
       showErrorAlert("Missing required appointment property");
     }
   };
+
+  const handleCancel = () => {
+    navigate("/dashboard");
+  };
+
+  // --------------------HANDLE QUERIES--------------------
+  useEffect(() => {
+    const aptId = query.get("appointmentId");
+    const serviceTitle = query.get("serviceTitle");
+    const doctorName = query.get("doctorName");
+    const aptDay = query.get("day");
+    const aptTime = query.get("time");
+    if (services && aptId && serviceTitle && doctorName && aptDay && aptTime) {
+      setAppointmentId(aptId);
+      setAppointmentDay(aptDay);
+      setAppointmentTime(aptTime);
+      const selectedService = services.filter(
+        (s) => s.title === serviceTitle
+      )[0];
+      setService(selectedService);
+      const selectedDoctor = selectedService.doctors.filter(
+        (d) => d.name === doctorName
+      )[0];
+      setDoctor(selectedDoctor);
+      dispatch(fetchAppointmentsByDoctor({ doctor: selectedDoctor.name }));
+    }
+    return () => {};
+  }, [services]);
 
   // --------------------HANDLE DOCTOR WITH SLOTS--------------------
   useEffect(() => {
@@ -81,15 +140,23 @@ export default function Booking() {
         const { day, times } = timing;
         const newTimes = times.map((time) => {
           // if doctor day and time === appointment doctor day and time
-          const isUnavailable =
-            appointmentsByDoctor.filter(
-              (a) =>
-                a.doctor.name === doctor.name &&
-                a.day === day &&
-                a.time === time
-            ).length > 0;
-          // doctor time isUnavailable
-          return { time, isUnavailable };
+          const fltrdApps = appointmentsByDoctor.filter(
+            (a) =>
+              a.doctor.name === doctor.name && a.day === day && a.time === time
+          );
+
+          // check if doctor time isUnavailable
+          const isUnavailable = fltrdApps.length > 0;
+
+          // check if its current day and time
+          let isCurrent = false;
+          if (isUnavailable && appointmentDay && appointmentTime) {
+            isCurrent =
+              fltrdApps[0].day === appointmentDay &&
+              fltrdApps[0].time === appointmentTime;
+          }
+
+          return { time, isUnavailable, isCurrent };
         });
 
         timing.times = newTimes;
@@ -109,7 +176,9 @@ export default function Booking() {
         mb: 16,
       }}
     >
-      <SectionTitle>Schedule Appointment</SectionTitle>
+      <SectionTitle>
+        {isUpdate ? "Reschedule" : "Schedule"} Appointment
+      </SectionTitle>
 
       <Box sx={{ display: "flex", mb: 8 }}>
         <FormControl sx={{ width: 300, mr: 8 }}>
@@ -120,6 +189,7 @@ export default function Booking() {
             value={service}
             label="Service"
             onChange={handleService}
+            disabled={isUpdate}
           >
             <MenuItem value="">
               <em>Select a service</em>
@@ -142,7 +212,7 @@ export default function Booking() {
               value={doctor}
               label="Doctor"
               onChange={handleDoctor}
-              disabled={service === null}
+              disabled={service === null || isUpdate}
             >
               <MenuItem value="">
                 <em>Select a doctor</em>
@@ -183,6 +253,8 @@ export default function Booking() {
                     color={
                       doctorDay === day && doctorTime.time === time
                         ? "primary"
+                        : doctorTime.isCurrent
+                        ? "success"
                         : "default"
                     }
                     disabled={doctorTime.isUnavailable}
@@ -199,11 +271,22 @@ export default function Booking() {
           <Button
             variant="contained"
             size="large"
-            onClick={handleCreateAppointment}
+            onClick={handleSubmit}
+            sx={{ mr: 2 }}
           >
-            Schedule
+            {isUpdate ? "Update" : "Schedule"}
           </Button>
         </>
+      )}
+      {isUpdate && (
+        <Button
+          variant="contained"
+          size="large"
+          color="error"
+          onClick={handleCancel}
+        >
+          Cancel
+        </Button>
       )}
     </Container>
   );

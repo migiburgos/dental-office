@@ -42,3 +42,17 @@ export const createAppointment = createAsyncThunk(
     }
   }
 );
+
+export const updateAppointment = createAsyncThunk(
+  "appointments/updateAppointment",
+  async (body, { rejectWithValue, dispatch }) => {
+    try {
+      const appointments = await appointmentsAPI.updateAppointment(body);
+      dispatch(fetchAppointments());
+
+      return appointments.appointments;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
