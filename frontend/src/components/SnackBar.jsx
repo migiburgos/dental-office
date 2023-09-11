@@ -6,12 +6,16 @@ import { useSelector } from "react-redux";
 export default function SnackBar() {
   const { snackState, closeAlert, showErrorAlert } = useSnack();
   const authError = useSelector((state) => state.auth.error);
+  const appointmentsError = useSelector((state) => state.appointments.error);
 
   useEffect(() => {
     if (authError) {
       showErrorAlert(authError.message);
     }
-  }, [authError]);
+    if (appointmentsError) {
+      showErrorAlert(appointmentsError.message);
+    }
+  }, [authError, appointmentsError]);
 
   return (
     <Snackbar

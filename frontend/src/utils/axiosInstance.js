@@ -15,7 +15,7 @@ export const checkInternetError = "Check your internet connection";
 //   };
 // };
 export const handleValidation = (error) => {
-  //console.error('axiosInstance -> handleValidation', error);
+  // console.error("axiosInstance -> handleValidation", error);
   const errorMsg = error?.response?.data?.error
     ? error?.response?.data?.error.message
     : error?.message;
@@ -36,7 +36,7 @@ export const setAxiosAuthToken = (token) => {
 
 const onFulfilledRequest = (response) => response;
 const onRejectedResponse = (error) => {
-  // console.error("onRejectedResponse =========>", error);
+  console.error("onRejectedResponse =========>", error);
   if (!error.response) {
     //console.error('inside response');
     return Promise.reject(checkInternetError);

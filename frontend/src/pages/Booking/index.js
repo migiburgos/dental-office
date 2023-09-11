@@ -12,89 +12,27 @@ import {
   Snackbar,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { SectionTitle } from "../../components";
-import { useSelector } from "react-redux";
-
-const appointmentsByDoctor = [
-  {
-    _id: "64fe031e4eec49c65dfb466d",
-    service: {
-      _id: "64fe031e4eec49c65dfb464c",
-      title: "Dental Cleanings",
-    },
-    doctor: {
-      _id: "64fe031e4eec49c65dfb4640",
-      name: "John Smith",
-    },
-    day: "Monday",
-    time: "1:30 PM",
-    __v: 0,
-  },
-  {
-    _id: "64fe031e4eec49c65dfb466e",
-    service: {
-      _id: "64fe031e4eec49c65dfb464c",
-      title: "Dental Cleanings",
-    },
-    doctor: {
-      _id: "64fe031e4eec49c65dfb4640",
-      name: "John Smith",
-    },
-    day: "Tuesday",
-    time: "5:30 PM",
-    __v: 0,
-  },
-  {
-    _id: "64fe031e4eec49c65dfb466f",
-    service: {
-      _id: "64fe031e4eec49c65dfb464c",
-      title: "Dental Cleanings",
-    },
-    doctor: {
-      _id: "64fe031e4eec49c65dfb4640",
-      name: "John Smith",
-    },
-    day: "Wednesday",
-    time: "3:30 PM",
-    __v: 0,
-  },
-];
+import { useDispatch, useSelector } from "react-redux";
+import { appointmentsActions } from "../../stores/actions";
+import { useSnack } from "../../context/SnackContext";
 
 export default function Booking() {
+  const { fetchAppointmentsByDoctor, createAppointment } = appointmentsActions;
+  const dispatch = useDispatch();
+  const { showErrorAlert, showSuccessAlert } = useSnack();
+
   const services = useSelector((state) => state.services.data);
+  const appointmentsByDoctor = useSelector(
+    (state) => state.appointments.dataByDoctor
+  );
 
   const [service, setService] = useState("");
   const [doctor, setDoctor] = useState("");
   const [doctorWithSlots, setDoctorWithSlots] = useState(null);
   const [day, setDay] = useState(null);
   const [time, setTime] = useState(null);
-
-  const [snackState, setSnackState] = useState({
-    isOpen: false,
-    type: "error",
-    message: "This is an error message!",
-  });
-
-  const showErrorAlert = (newState) => {
-    setSnackState({
-      type: "error",
-      message: "This is an error message!",
-      isOpen: true,
-    });
-  };
-
-  const showSuccessAlert = (newState) => {
-    setSnackState({
-      type: "success",
-      message: "This is a success message!",
-      isOpen: true,
-    });
-  };
-
-  const closeAlert = () => {
-    setSnackState({ ...snackState, isOpen: false });
-  };
 
   const handleService = (event) => {
     setService(event.target.value);
@@ -105,6 +43,7 @@ export default function Booking() {
 
   const handleDoctor = (event) => {
     setDoctor(event.target.value);
+    dispatch(fetchAppointmentsByDoctor({ doctor: event.target.value.name }));
     setDoctorWithSlots(null);
     setDay(null);
     setTime(null);
@@ -115,8 +54,26 @@ export default function Booking() {
     setTime(time);
   };
 
+  const handleCreateAppointment = () => {
+    if (service && doctor && day && time) {
+      // create appointment
+      dispatch(
+        createAppointment({
+          doctorName: doctor.name,
+          serviceTitle: service.title,
+          day,
+          time,
+        })
+      );
+      showSuccessAlert("Appointment Booked Successfully!");
+    } else {
+      showErrorAlert("Missing required appointment property");
+    }
+  };
+
+  // --------------------HANDLE DOCTOR WITH SLOTS--------------------
   useEffect(() => {
-    if (doctor) {
+    if (doctor && appointmentsByDoctor) {
       // deep clone doctor
       let tempDoc = JSON.parse(JSON.stringify(doctor));
       // loop through doctor timing
@@ -141,7 +98,7 @@ export default function Booking() {
       tempDoc.timings = newTimings;
       setDoctorWithSlots(tempDoc);
     }
-  }, [doctor]);
+  }, [doctor, appointmentsByDoctor, dispatch, fetchAppointmentsByDoctor]);
 
   return (
     <Container
@@ -239,28 +196,15 @@ export default function Booking() {
       )}
       {service && doctor && day && time && (
         <>
-          <Button variant="contained" size="large" onClick={showErrorAlert}>
-            Error
-          </Button>
-          <Button variant="contained" size="large" onClick={showSuccessAlert}>
-            Success
+          <Button
+            variant="contained"
+            size="large"
+            onClick={handleCreateAppointment}
+          >
+            Schedule
           </Button>
         </>
       )}
-      <Snackbar
-        open={snackState.isOpen}
-        autoHideDuration={6000}
-        onClose={closeAlert}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <Alert
-          onClose={closeAlert}
-          severity={snackState.type}
-          sx={{ width: "100%" }}
-        >
-          {snackState.message}
-        </Alert>
-      </Snackbar>
     </Container>
   );
 }

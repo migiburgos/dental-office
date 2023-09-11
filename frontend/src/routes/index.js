@@ -6,12 +6,17 @@ import Booking from "../pages/Booking";
 import Dashboard from "../pages/Dashboard";
 import { useDispatch, useSelector } from "react-redux";
 import { retrieveAuthToken } from "../utils/localStorage";
-import axiosInstance from "../utils/axiosInstance";
-import { authActions, servicesActions } from "../stores/actions/";
+import { setAxiosAuthToken } from "../utils/axiosInstance";
+import {
+  authActions,
+  servicesActions,
+  appointmentsActions,
+} from "../stores/actions/";
 
 export default function AppRoutes() {
   const { fetchMyInfo } = authActions;
   const { fetchServices } = servicesActions;
+  const { fetchAppointments } = appointmentsActions;
 
   const dispatch = useDispatch();
 
@@ -22,7 +27,7 @@ export default function AppRoutes() {
     const userSession = await retrieveAuthToken();
     if (userSession) {
       const token = userSession.token;
-      axiosInstance.defaults.headers["auth-token"] = token;
+      setAxiosAuthToken(token);
       dispatch(fetchMyInfo());
     }
   }, [dispatch, fetchMyInfo]);
@@ -38,6 +43,18 @@ export default function AppRoutes() {
 
     return () => {};
   }, [initalize, dispatch]);
+
+  // --------------------FETCH DATA--------------------
+  const fetchData = useCallback(() => {
+    if (auth) {
+      dispatch(fetchAppointments());
+    }
+  }, [dispatch, auth, fetchAppointments]);
+
+  useEffect(() => {
+    fetchData();
+    return () => {};
+  }, [fetchData]);
 
   return (
     <Routes>
