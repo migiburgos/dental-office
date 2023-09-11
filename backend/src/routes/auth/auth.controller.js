@@ -46,6 +46,7 @@ async function httpRegister(req, res) {
 
 async function httpLogin(req, res) {
   const { username, password } = req.body;
+  console.log("we inside?", username, password);
 
   // validate
   if (!username || !password) {
@@ -59,9 +60,10 @@ async function httpLogin(req, res) {
   // check if user exists
   const user = await findByUsername(username);
   if (!user) {
+    console.log("Username or password is incorrect");
     return res.status(400).json({
       error: {
-        message: "Username already exists",
+        message: "Username or password is incorrect",
       },
     });
   }

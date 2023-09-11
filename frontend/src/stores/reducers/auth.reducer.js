@@ -31,7 +31,7 @@ const authSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(login.rejected, (state, action) => {
-      console.error("auth.reducer -> login.rejected", action.payload);
+      // console.error("auth.reducer -> login.rejected", action.payload);
       state.error = action.payload;
       state.loading = false;
     });

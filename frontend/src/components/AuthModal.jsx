@@ -4,11 +4,13 @@ import { SectionTitle } from "../components";
 
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../stores/actions";
+import { useSnack } from "../context/SnackContext";
 
 const { login } = authActions;
 
 export default function AuthModal({ isModalShowing, closeModal }) {
   const dispatch = useDispatch();
+  const { showErrorAlert, showSuccessAlert } = useSnack();
 
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
@@ -21,8 +23,8 @@ export default function AuthModal({ isModalShowing, closeModal }) {
   };
 
   const onSubmit = () => {
-    console.log("hello");
     dispatch(login({ username, password }));
+    showSuccessAlert("Login Successfully!");
   };
 
   return (

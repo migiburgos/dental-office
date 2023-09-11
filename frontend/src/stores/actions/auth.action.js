@@ -22,7 +22,6 @@ export const register = createAsyncThunk(
 export const login = createAsyncThunk(
   "auth/login",
   async (body, { rejectWithValue }) => {
-    console.log("auth.action");
     try {
       const data = await authAPI.login(body);
 
@@ -31,7 +30,7 @@ export const login = createAsyncThunk(
 
       return data.user;
     } catch (error) {
-      console.error("auth.action -> login -> error", error);
+      // console.error("auth.action -> login -> error", error);
       return rejectWithValue(error);
     }
   }

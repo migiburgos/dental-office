@@ -9,15 +9,15 @@ export default function SnackContextProvider({ children }) {
     message: "This is an error message!",
   });
 
-  const showErrorAlert = (message = "This is an error message!") => {
+  const showErrorAlert = (message = "Error!") => {
     setSnackState({
       type: "error",
-      message: "This is an error message!",
+      message: message,
       isOpen: true,
     });
   };
 
-  const showSuccessAlert = (message = "This is a success message!") => {
+  const showSuccessAlert = (message = "Success!") => {
     setSnackState({
       type: "success",
       message: message,

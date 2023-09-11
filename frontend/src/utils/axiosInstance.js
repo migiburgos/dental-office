@@ -5,21 +5,23 @@ const URL = "http://localhost:8000/api/v1";
 export const defaultError = "Something went wrong! Try again later.";
 export const checkInternetError = "Check your internet connection";
 
-export const handleError = (error) => {
-  const errorString = error?.response?.data
-    ? error?.response?.data?.message
-    : error?.message;
-  return {
-    message: errorString ? errorString : defaultError,
-    code: `${error?.response?.status || error?.code}`,
-  };
-};
+// export const handleError = (error) => {
+//   const errorString = error?.response?.data
+//     ? error?.response?.data?.message
+//     : error?.message;
+//   return {
+//     message: errorString ? errorString : defaultError,
+//     code: `${error?.response?.status || error?.code}`,
+//   };
+// };
 export const handleValidation = (error) => {
-  const errors = error?.response?.data?.errors
-    ? error?.response?.data?.errors
-    : null;
   //console.error('axiosInstance -> handleValidation', error);
-  return errors;
+  const errorMsg = error?.response?.data?.error.message;
+  const errorCode = error?.response?.status;
+  return {
+    message: errorMsg ? errorMsg : defaultError,
+    code: `${errorCode || error?.code}`,
+  };
 };
 
 export const setAxiosAuthToken = (token) => {
@@ -32,7 +34,7 @@ export const setAxiosAuthToken = (token) => {
 
 const onFulfilledRequest = (response) => response;
 const onRejectedResponse = (error) => {
-  console.error(error);
+  // console.error(error);
   if (!error.response) {
     //console.error('inside response');
     return Promise.reject(checkInternetError);
@@ -41,11 +43,11 @@ const onRejectedResponse = (error) => {
     // console.error("inside handleValidation");
     return Promise.reject(handleValidation(error));
   }
-  if (handleError(error)) {
-    // console.error("inside handleError");
-    return Promise.reject(handleError(error));
-  }
-  // console.error("else");
+  // if (handleError(error)) {
+  //   // console.error("inside handleError");
+  //   return Promise.reject(handleError(error));
+  // }
+  console.error("else");
   return Promise.reject({ ...error });
 };
 
