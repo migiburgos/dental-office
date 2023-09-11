@@ -7,30 +7,31 @@ import Dashboard from "../pages/Dashboard";
 import { useDispatch, useSelector } from "react-redux";
 import { retrieveAuthToken } from "../utils/localStorage";
 import axiosInstance from "../utils/axiosInstance";
-import { authActions } from "../stores/actions/";
-
-const { fetchMyInfo } = authActions;
+import { authActions, servicesActions } from "../stores/actions/";
 
 export default function AppRoutes() {
+  const { fetchMyInfo } = authActions;
+  const { fetchServices } = servicesActions;
+
   const dispatch = useDispatch();
+
   const auth = useSelector((state) => state.auth.data);
 
   // --------------------LOGIN--------------------
   const login = useCallback(async () => {
-    {
-      const userSession = await retrieveAuthToken();
-      if (userSession) {
-        const token = userSession.token;
-        axiosInstance.defaults.headers["auth-token"] = token;
-        dispatch(fetchMyInfo()).then(() => console.log("yo"));
-      }
+    const userSession = await retrieveAuthToken();
+    if (userSession) {
+      const token = userSession.token;
+      axiosInstance.defaults.headers["auth-token"] = token;
+      dispatch(fetchMyInfo());
     }
-  }, [dispatch]);
+  }, [dispatch, fetchMyInfo]);
 
   // --------------------INITIALIZE--------------------
   const initalize = useCallback(() => {
     login();
-  }, [login]);
+    dispatch(fetchServices());
+  }, [login, dispatch, fetchServices]);
 
   useEffect(() => {
     initalize();

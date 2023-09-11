@@ -33,7 +33,7 @@ export default function AuthModal() {
   useEffect(() => {
     if (auth) {
       closeModal();
-      showSuccessAlert("Login Successfully!");
+      showSuccessAlert("Login Successful!");
     }
   }, [auth]);
 
