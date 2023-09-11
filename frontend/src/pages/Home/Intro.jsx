@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Box, Grid, Typography, Button } from "@mui/material";
 import styled from "@emotion/styled";
 import { SectionTitle } from "../../components";
+import ButtonSchedule from "../../components/ButtonSchedule";
 
 const Image = styled.img`
   width: 100%;
@@ -37,14 +38,7 @@ export default function Intro({ openModal }) {
               crafting healthy, beautiful smiles in a welcoming,
               state-of-the-art environment.
             </Typography>
-            <Button
-              variant="contained"
-              size="large"
-              sx={{ width: 256, maxWidth: "100%", height: 64 }}
-              onClick={openModal}
-            >
-              Schedule Appointment
-            </Button>
+            <ButtonSchedule type={"large"} openModal={openModal} />
           </Grid>
           <Grid
             item

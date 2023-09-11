@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { authAPI } from "../apis";
 import { setAxiosAuthToken } from "../../utils/axiosInstance";
-import { storeAuthToken } from "../../utils/localStorage";
+import { storeAuthToken, removeAuthToken } from "../../utils/localStorage";
 
 export const register = createAsyncThunk(
   "auth/register",
@@ -33,5 +33,13 @@ export const login = createAsyncThunk(
       // console.error("auth.action -> login -> error", error);
       return rejectWithValue(error);
     }
+  }
+);
+
+export const logout = createAsyncThunk(
+  "auth/logout",
+  async (_, { rejectWithValue, dispatch }) => {
+    removeAuthToken();
+    return null;
   }
 );

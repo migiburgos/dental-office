@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import styled from "@emotion/styled";
 import { SectionTitle } from "../../components";
+import ButtonSchedule from "../../components/ButtonSchedule";
 
 const Image = styled.img`
   width: 100%;
@@ -70,14 +71,7 @@ export default function Services({ openModal }) {
               hygienist carefully removes plaque, tartar, and stains from the
               teeth's surfaces.
             </Typography>
-            <Button
-              variant="contained"
-              size="large"
-              sx={{ width: 255, maxWidth: "100%" }}
-              onClick={openModal}
-            >
-              Schedule Appointment
-            </Button>
+            <ButtonSchedule openModal={openModal} />
           </Grid>
           <Grid
             item
