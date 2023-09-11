@@ -56,3 +56,17 @@ export const updateAppointment = createAsyncThunk(
     }
   }
 );
+
+export const deleteAppointment = createAsyncThunk(
+  "appointments/deleteAppointment",
+  async (body, { rejectWithValue, dispatch }) => {
+    try {
+      const appointments = await appointmentsAPI.deleteAppointment(body);
+      dispatch(fetchAppointments());
+
+      return appointments.appointments;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);

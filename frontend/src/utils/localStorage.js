@@ -1,5 +1,4 @@
 export async function storeAuthToken(token, user) {
-  console.log("encryptedStorage -> storeUserSession", token);
   window.localStorage.setItem(
     "auth_token",
     JSON.stringify({

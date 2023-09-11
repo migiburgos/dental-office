@@ -5,6 +5,7 @@ const {
   fetchAppointmentsByDoctor,
   createAppointment,
   updateAppointment,
+  deleteAppointment,
 } = appointmentsActions;
 
 const authSlice = createSlice({
@@ -62,6 +63,18 @@ const authSlice = createSlice({
     });
     builder.addCase(updateAppointment.rejected, (state, action) => {
       // console.error("auth.reducer -> updateAppointment.rejected", action.payload);
+      state.error = action.payload;
+      state.loading = false;
+    });
+
+    builder.addCase(deleteAppointment.fulfilled, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(deleteAppointment.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteAppointment.rejected, (state, action) => {
+      // console.error("auth.reducer -> deleteAppointment.rejected", action.payload);
       state.error = action.payload;
       state.loading = false;
     });

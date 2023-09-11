@@ -23,3 +23,9 @@ export const updateAppointment = async (body) => {
   const response = await axiosInstance.put(`${PATH}/${id}`, body);
   return response.data;
 };
+
+export const deleteAppointment = async (body) => {
+  const id = body.appointmentId;
+  const response = await axiosInstance.delete(`${PATH}/${id}`, body);
+  return response.data;
+};

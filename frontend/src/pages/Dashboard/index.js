@@ -1,5 +1,14 @@
-import { Box, Button, Container } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  Button,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import React, { useState } from "react";
 import { SectionTitle } from "../../components";
 
 import Table from "@mui/material/Table";
@@ -8,14 +17,34 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ButtonSchedule from "../../components/ButtonSchedule";
+import { appointmentsActions } from "../../stores/actions";
 
 export default function Dashboard() {
+  const { deleteAppointment } = appointmentsActions;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const appointments = useSelector((state) => state.appointments.data);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleDialogOpen = (appointment) => {
+    setSelectedAppointment(appointment);
+    setIsDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
+  };
+
+  const handleDelete = () => {
+    dispatch(deleteAppointment({ appointmentId: selectedAppointment._id }));
+    handleDialogClose();
+  };
 
   const handleEdit = (appointmentId, serviceTitle, doctorName, day, time) => {
     navigate(
@@ -57,10 +86,7 @@ export default function Dashboard() {
                 <TableCell align="right" sx={{ fontWeight: "bold" }}>
                   Time
                 </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{ fontWeight: "bold" }}
-                ></TableCell>
+                <TableCell align="right" sx={{ fontWeight: "bold" }} />
               </TableRow>
             </TableHead>
             <TableBody>
@@ -83,8 +109,19 @@ export default function Dashboard() {
                         onClick={() =>
                           handleEdit(_id, service.title, doctor.name, day, time)
                         }
+                        sx={{ mr: 1 }}
                       >
                         Edit
+                      </Button>
+                      <Button
+                        variant="contained"
+                        size="small"
+                        onClick={() =>
+                          handleDialogOpen({ _id, service, doctor, day, time })
+                        }
+                        color="error"
+                      >
+                        Cancel
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -94,6 +131,30 @@ export default function Dashboard() {
           </Table>
         </TableContainer>
       )}
+      <Dialog
+        open={isDialogOpen}
+        onClose={handleDialogClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        {selectedAppointment && (
+          <>
+            <DialogTitle id="alert-dialog-title">{`Cancel ${selectedAppointment.service.title} with ${selectedAppointment.doctor.name}`}</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Please note that once you proceed with this action, it cannot be
+                undone.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleDialogClose}>Disagree</Button>
+              <Button onClick={handleDelete} autoFocus>
+                Agree
+              </Button>
+            </DialogActions>
+          </>
+        )}
+      </Dialog>
     </Container>
   );
 }
