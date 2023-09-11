@@ -2,21 +2,14 @@ import React, { useState } from "react";
 import { Tabs, Tab, Box, Button, Modal, TextField } from "@mui/material";
 import { SectionTitle } from "../components";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  //   width: 400,
-  bgcolor: "background.paper",
-  //   border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-  display: "flex",
-  flexDirection: "column",
-};
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../stores/actions";
+
+const { login } = authActions;
 
 export default function AuthModal({ isModalShowing, closeModal }) {
+  const dispatch = useDispatch();
+
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -27,7 +20,10 @@ export default function AuthModal({ isModalShowing, closeModal }) {
     setValue(newValue);
   };
 
-  const onSubmit = () => {};
+  const onSubmit = () => {
+    console.log("hello");
+    dispatch(login({ username, password }));
+  };
 
   return (
     <Modal
@@ -37,7 +33,19 @@ export default function AuthModal({ isModalShowing, closeModal }) {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
+      <Box
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          bgcolor: "background.paper",
+          boxShadow: 24,
+          p: 4,
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <SectionTitle>Login / Register</SectionTitle>
         <Box
           sx={{

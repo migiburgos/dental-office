@@ -39,7 +39,7 @@ export default function Services({ openModal }) {
         <Grid
           container
           spacing={0}
-          sx={value % 2 && { flexDirection: "row-reverse" }}
+          sx={{ flexDirection: value % 2 ? "row-reverse" : "row" }}
         >
           <Grid
             item

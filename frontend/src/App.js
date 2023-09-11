@@ -20,9 +20,6 @@ function App() {
         <Route path="/schedule" element={<Booking />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
-      {/* <Home /> */}
-      {/* <Booking /> */}
-      {/* <Dashboard /> */}
     </ScopedCssBaseline>
   );
 }
