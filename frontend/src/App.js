@@ -10,6 +10,7 @@ import SnackBar from "./components/SnackBar";
 import AuthModalContextProvider from "./context/AuthModalContext";
 import { AuthModal } from "./components";
 import AppRoutes from "./routes";
+import LoadingIndicator from "./components/LoadingIndicator";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <ScopedCssBaseline>
           <Navbar />
           <Toolbar />
+          <LoadingIndicator />
           <AppRoutes />
         </ScopedCssBaseline>
         <AuthModal />
