@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const URL = "http://localhost:8000/api/v1";
+const URL = "api/v1";
+// const URL = "http://localhost:8080/api/v1";
 
 export const defaultError = "Something went wrong! Try again later.";
 export const checkInternetError = "Check your internet connection";
@@ -18,7 +19,7 @@ export const handleValidation = (error) => {
   // console.error("axiosInstance -> handleValidation", error);
   const errorMsg = error?.response?.data?.error
     ? error?.response?.data?.error.message
-    : error?.message;
+    : defaultError;
   const errorCode = error?.response?.status;
   return {
     message: errorMsg ? errorMsg : defaultError,

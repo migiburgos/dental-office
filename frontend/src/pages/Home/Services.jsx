@@ -24,6 +24,7 @@ export default function Services() {
   const handleChange = (event, newValue) => {
     setSelectedIndex(newValue);
   };
+  console.log(services);
   return (
     <Container
       maxWidth="lg"
@@ -33,7 +34,7 @@ export default function Services() {
 
       {isServicesLoading && <Typography variant="h1">Loading</Typography>}
 
-      {services && (
+      {services && services.length > 0 && (
         <>
           <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 3 }}>
             <Tabs value={selectedIndex} onChange={handleChange}>
@@ -93,9 +94,9 @@ export default function Services() {
                 }}
               >
                 <Image
-                  src={"/intro_photo.png"}
+                  src={`/service_photo${selectedIndex + 1}.png`}
                   Image
-                  alt={"intro_photo"}
+                  alt={services[selectedIndex].title}
                   loading="lazy"
                 />
               </Grid>
