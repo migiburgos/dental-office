@@ -1,5 +1,7 @@
 # Dental Office Online Scheduling System - System Documentation
 
+**Website URL**: [Jose's Dental Clinic](http://13.210.48.124/)
+
 ## **1. Introduction**
 
 The Dental Office Online Scheduling System is a web application designed to simplify the process of booking and managing dental appointments for patients. It employs React for the frontend, Node.js for the backend, MongoDB as the database, and deploys the application on AWS EC2 instances using Docker containers. This documentation provides an in-depth overview of the system architecture, components, database schema, deployment steps, and key assumptions made during the design and development.
