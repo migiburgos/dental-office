@@ -79,6 +79,8 @@ The Dental Office Online Scheduling System is a web application designed to simp
 - Fields: user, service, doctor, day, time
 - Purpose: Records appointment details, including the user, selected service, assigned dentist, appointment day, and time.
 
+![Dental Office ERD drawio](https://github.com/migiburgos/dental-office/assets/67326096/6fa9e73f-5bd1-4c52-83ff-4be49624612b)
+
 ## **5. Deployment Steps**
 
 1. **Requirements**:
