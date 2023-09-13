@@ -129,6 +129,10 @@ These deployment steps guide you through building a Docker image, pushing it to 
     - Assumption: Appointment slots can only be booked for the current week, and users cannot book appointments for future weeks without using a date picker.
     - Impact: Users can schedule appointments for a limited timeframe, which may affect scheduling flexibility.
     - Fallback Plan: Implement a date picker to enable users to select appointments beyond the current week, allowing for more extended booking options.
+2. **Website Responsiveness**:
+    - **Assumption**: The website is assumed to be primarily viewed on a computer. Viewing on mobile devices may result in a suboptimal user experience due to non-responsiveness.
+    - **Impact**: Mobile users may encounter usability issues and layout problems when accessing the site.
+    - **Mitigation**: Implement responsive design to ensure the website adapts and functions well on various screen sizes, including mobile devices, enhancing accessibility and user satisfaction.
 
 ## 7. Conclusion
 
