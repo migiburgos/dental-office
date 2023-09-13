@@ -5,6 +5,9 @@ const dataRouter = require("./data/data.router");
 const servicesRouter = require("./services/services.router");
 const usersRouter = require("./users/users.router");
 const appointmentsRouter = require("./appointments/appointments.router");
+const {
+  httpFetchAppointmentsByDoctor,
+} = require("./appointments/appointments.controller");
 
 const auth = require("../middlewares/auth.middleware");
 
@@ -14,6 +17,7 @@ api.use("/auth", authRouter);
 api.use("/data", dataRouter);
 api.use("/services", servicesRouter);
 api.use("/users", auth, usersRouter);
+api.get("/appointments/doctor/:name", httpFetchAppointmentsByDoctor);
 api.use("/appointments", auth, appointmentsRouter);
 
 module.exports = api;

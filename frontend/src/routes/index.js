@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 
 import Home from "../pages/Home";
 import Booking from "../pages/Booking";
@@ -14,13 +14,18 @@ import {
 } from "../stores/actions/";
 
 export default function AppRoutes() {
-  const { fetchMyInfo } = authActions;
+  const { fetchMyInfo, redirectUserToDashboard } = authActions;
   const { fetchServices } = servicesActions;
   const { fetchAppointments } = appointmentsActions;
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const auth = useSelector((state) => state.auth.data);
+  const hasRedirectedToDashboard = useSelector(
+    (state) => state.auth.hasRedirectedToDashboard
+  );
+  const appointments = useSelector((state) => state.appointments.data);
 
   // --------------------LOGIN--------------------
   const login = useCallback(async () => {
@@ -56,12 +61,20 @@ export default function AppRoutes() {
     return () => {};
   }, [fetchData]);
 
+  // --------------------REDIRECT TO DASHBOARD--------------------
+  useEffect(() => {
+    if (!hasRedirectedToDashboard && appointments) {
+      navigate("/dashboard");
+      dispatch(redirectUserToDashboard());
+    }
+  }, [dispatch, navigate, hasRedirectedToDashboard, appointments]);
+
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/schedule" element={<Booking />} />
       {auth && (
         <>
-          <Route path="/schedule" element={<Booking />} />
           <Route path="/dashboard" element={<Dashboard />} />
         </>
       )}

@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { appointmentsActions } from "../../stores/actions";
 import { useSnack } from "../../context/SnackContext";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuthModal } from "../../context/AuthModalContext";
 
 function useQuery() {
   const { search } = useLocation();
@@ -32,9 +33,11 @@ export default function Booking() {
   const query = useQuery();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { openModal } = useAuthModal();
 
   const { showErrorAlert, showSuccessAlert } = useSnack();
 
+  const auth = useSelector((state) => state.auth.data);
   const services = useSelector((state) => state.services.data);
   const appointmentsByDoctor = useSelector(
     (state) => state.appointments.dataByDoctor
@@ -73,7 +76,17 @@ export default function Booking() {
   };
 
   const handleSubmit = () => {
-    if (isUpdate && service && doctor && day && time) {
+    if (!service || !doctor || !day || !time) {
+      showErrorAlert("Missing required appointment property");
+      return;
+    }
+
+    if (!auth) {
+      openModal();
+      return;
+    }
+
+    if (isUpdate) {
       // update appointment
       dispatch(
         updateAppointment({
@@ -83,9 +96,7 @@ export default function Booking() {
           time,
         })
       );
-      navigate("/dashboard");
-      showSuccessAlert("Appointment Updated Successfully!");
-    } else if (service && doctor && day && time) {
+    } else {
       // create appointment
       dispatch(
         createAppointment({
@@ -95,11 +106,14 @@ export default function Booking() {
           time,
         })
       );
-      navigate("/dashboard");
-      showSuccessAlert("Appointment Booked Successfully!");
-    } else {
-      showErrorAlert("Missing required appointment property");
     }
+
+    navigate("/dashboard");
+    showSuccessAlert(
+      `Appointment ${isUpdate ? "Updated" : "Booked"} Successfully!`
+    );
+
+    showSuccessAlert("Appointment Updated Successfully!");
   };
 
   const handleCancel = () => {
@@ -194,11 +208,12 @@ export default function Booking() {
             <MenuItem value="">
               <em>Select a service</em>
             </MenuItem>
-            {services.map((s, i) => (
-              <MenuItem key={i} value={s}>
-                {s.title}
-              </MenuItem>
-            ))}
+            {services &&
+              services.map((s, i) => (
+                <MenuItem key={i} value={s}>
+                  {s.title}
+                </MenuItem>
+              ))}
           </Select>
           <FormHelperText>Select a service</FormHelperText>
         </FormControl>

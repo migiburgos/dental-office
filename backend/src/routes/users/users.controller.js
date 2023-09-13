@@ -1,4 +1,7 @@
-const { updateUser, findById } = require("../../models/users/users.model");
+const {
+  updateUser,
+  findByIdNoPassword,
+} = require("../../models/users/users.model");
 
 async function httpUpdateUser(req, res) {
   const userId = req.context;
@@ -24,7 +27,7 @@ async function httpUpdateUser(req, res) {
 async function httpFetchMyUser(req, res) {
   const userId = req.context;
 
-  const user = await findById(userId);
+  const user = await findByIdNoPassword(userId);
 
   return res.status(200).json({
     user: user,

@@ -13,25 +13,36 @@ const { checkDoctorTimeDayAvailable } = require("./appointments.helper");
 
 async function httpFetchAppointments(req, res) {
   const userId = req.context;
-  const { doctor: doctorName, service: serviceTitle } = req.query;
 
-  let appointments;
+  const appointments = await fetchAppointmentsByUserId(userId);
 
-  if (doctorName) {
-    // check if doctor exists
-    const doctor = await DoctorsModel.findByName(doctorName);
-    if (!doctor) {
-      return res.status(400).json({
-        error: {
-          message: "Doctor does not exist",
-        },
-      });
-    }
+  return res.status(200).json({
+    appointments,
+    message: "Retrieved appointments successfully!",
+  });
+}
 
-    appointments = await fetchAppointmentsByDoctor(doctor.id);
-  } else {
-    appointments = await fetchAppointmentsByUserId(userId);
+async function httpFetchAppointmentsByDoctor(req, res) {
+  const { name: doctorName } = req.params;
+
+  if (!doctorName) {
+    return res.status(400).json({
+      error: {
+        message: "Missing doctor name",
+      },
+    });
   }
+
+  const doctor = await DoctorsModel.findByName(doctorName);
+  if (!doctor) {
+    return res.status(400).json({
+      error: {
+        message: "Doctor does not exist",
+      },
+    });
+  }
+
+  const appointments = await fetchAppointmentsByDoctor(doctor.id);
 
   return res.status(200).json({
     appointments,
@@ -200,4 +211,5 @@ module.exports = {
   httpCreateAppointment,
   httpUpdateAppointments,
   httpDeleteAppointmentById,
+  httpFetchAppointmentsByDoctor,
 };

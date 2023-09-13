@@ -57,3 +57,10 @@ export const logout = createAsyncThunk(
     return null;
   }
 );
+
+export const redirectUserToDashboard = createAsyncThunk(
+  "auth/redirectUserToDashboard",
+  async (_, { rejectWithValue, dispatch }) => {
+    return true;
+  }
+);

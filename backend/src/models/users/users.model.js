@@ -11,6 +11,16 @@ async function findById(userId) {
   return null;
 }
 
+async function findByIdNoPassword(userId) {
+  const user = await Users.findById(userId, "-password");
+
+  if (user) {
+    return user;
+  }
+
+  return null;
+}
+
 async function findByUsername(username) {
   const user = await Users.findOne({
     username: username.toLowerCase(),
@@ -39,7 +49,7 @@ async function updateUser(userId, newData) {
       _id: new ObjectId(userId),
     },
     newData,
-    { new: true }
+    { new: true, fields: { name: 1, username: 1 } }
   );
 
   return user;
@@ -57,4 +67,5 @@ module.exports = {
   findById,
   updateUser,
   deleteGeneratedUser,
+  findByIdNoPassword,
 };

@@ -8,8 +8,8 @@ export const fetchAppointments = async (body) => {
 };
 
 export const fetchAppointmentsByDoctor = async (body) => {
-  const query = encodeURI(`?doctor=${body.doctor}`);
-  const response = await axiosInstance.get(`${PATH}/${query}`);
+  const query = encodeURI(body.doctor);
+  const response = await axiosInstance.get(`${PATH}/doctor/${query}`);
   return response.data;
 };
 

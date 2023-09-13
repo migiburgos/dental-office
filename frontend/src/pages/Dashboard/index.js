@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import { SectionTitle } from "../../components";
@@ -27,6 +28,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const auth = useSelector((state) => state.auth.data);
   const appointments = useSelector((state) => state.appointments.data);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
 
@@ -60,7 +62,16 @@ export default function Dashboard() {
         mb: 16,
       }}
     >
-      <SectionTitle>Dashboard</SectionTitle>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <SectionTitle>Dashboard</SectionTitle>
+        <Typography variant="h5">Hi, {auth.name}</Typography>
+      </Box>
       <Box
         sx={{
           display: "flex",

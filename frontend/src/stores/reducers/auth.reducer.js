@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { authActions } from "../actions";
-const { register, login, logout, fetchMyInfo } = authActions;
+const { register, login, logout, fetchMyInfo, redirectUserToDashboard } =
+  authActions;
 
 const authSlice = createSlice({
   name: "auth",
@@ -8,6 +9,7 @@ const authSlice = createSlice({
     data: null,
     loading: false,
     error: null,
+    hasRedirectedToDashboard: false,
   },
   extraReducers: (builder) => {
     builder.addCase(register.fulfilled, (state, action) => {
@@ -51,6 +53,12 @@ const authSlice = createSlice({
 
     builder.addCase(logout.fulfilled, (state, action) => {
       state.data = action.payload;
+      state.loading = false;
+      state.hasRedirectedToDashboard = false;
+    });
+
+    builder.addCase(redirectUserToDashboard.fulfilled, (state, action) => {
+      state.hasRedirectedToDashboard = true;
       state.loading = false;
     });
   },
