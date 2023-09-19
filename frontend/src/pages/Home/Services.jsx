@@ -94,7 +94,7 @@ export default function Services() {
                 }}
               >
                 <Image
-                  src={`/service_photo${selectedIndex + 1}.png`}
+                  src={services[selectedIndex].imageUrl}
                   Image
                   alt={services[selectedIndex].title}
                   loading="lazy"

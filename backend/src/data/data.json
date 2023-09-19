@@ -61,17 +61,20 @@
     {
       "title": "Dental Cleanings",
       "description": "Dental cleanings, also known as dental prophylaxis, are essential for maintaining good oral hygiene. During this procedure, a dental hygienist carefully removes plaque, tartar, and stains from the teeth's surfaces.",
-      "doctors": ["Bobby Drake", "Leila Howe", "John Smith"]
+      "doctors": ["Bobby Drake", "Leila Howe", "John Smith"],
+      "imageUrl": "https://dental-office-static-data-store.s3.us-west-2.amazonaws.com/service1.webp"
     },
     {
       "title": "Check-ups",
       "description": "Dental check-ups, or routine examinations, are crucial for monitoring and maintaining your oral health. During a dental check-up, a dentist examines your teeth, gums, and overall oral cavity for signs of dental issues such as cavities, gum disease, or oral cancer.",
-      "doctors": ["Leila Howe", "John Smith"]
+      "doctors": ["Leila Howe", "John Smith"],
+      "imageUrl": "https://dental-office-static-data-store.s3.us-west-2.amazonaws.com/service2.webp"
     },
     {
       "title": "Tooth Extractions",
       "description": "Tooth extractions involve the removal of a tooth from its socket in the jawbone. This procedure is typically performed when a tooth is severely decayed, damaged, infected, or causing overcrowding.",
-      "doctors": ["John Smith"]
+      "doctors": ["John Smith"],
+      "imageUrl": "https://dental-office-static-data-store.s3.us-west-2.amazonaws.com/service3.webp"
     }
   ],
   "appointments": [

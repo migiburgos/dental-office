@@ -52,7 +52,9 @@ export default function Intro() {
             }}
           >
             <Image
-              src={"/intro_photo.png"}
+              src={
+                "https://dental-office-static-data-store.s3.us-west-2.amazonaws.com/intro_photo.webp"
+              }
               Image
               alt={"intro_photo"}
               loading="lazy"

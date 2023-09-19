@@ -9,6 +9,10 @@ const servicesSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  imageUrl: {
+    type: String,
+    required: true,
+  },
   doctors: [{ type: mongoose.Schema.Types.ObjectId, ref: "Doctors" }],
 });
 
