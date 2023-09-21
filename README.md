@@ -86,7 +86,7 @@ The Dental Office Online Scheduling System is a web application designed to simp
 
 ## **5. Deployment Steps (AWS & Kubernetes)**
 
-In this step, I will deploy the Dental Office application on an **AWS EC2 instance**, utilizing **Docker**, **Kubernetes**, and **Kops** for efficient, scalable hosting.
+In this step, I will deploy the Dental Office application on an **AWS EC2 instance**, utilizing **Docker**, **Kubernetes**, **S3 Bucket**, and **Kops** for efficient, scalable hosting.
 
 ### Docker
 
