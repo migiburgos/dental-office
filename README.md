@@ -2,7 +2,7 @@
 
 # Dental Office Online Scheduling System - System Documentation
 
-**Website URL**: [Jose’s Dental Clinic](http://13.210.48.124/)
+**Website URL**: [Jose’s Dental Clinic](http://ec2-3-27-15-134.ap-southeast-2.compute.amazonaws.com/)
 
 ## **1. Introduction**
 
