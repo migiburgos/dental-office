@@ -316,6 +316,7 @@ The output should look like this when it’s ready
 
 <img width="821" alt="11" src="https://github.com/migiburgos/dental-office/assets/67326096/73ae5dc1-bbed-4a2c-9638-2af50e208d7f">
 
+### **Deploy Application**
 
 Clone the YAML files from GitHub:
 
