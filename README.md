@@ -354,6 +354,14 @@ This comprehensive deployment process has successfully enabled the deployment of
     - **Assumption**: The website is assumed to be primarily viewed on a computer. Viewing on mobile devices may result in a suboptimal user experience due to non-responsiveness.
     - **Impact**: Mobile users may encounter usability issues and layout problems when accessing the site.
     - **Mitigation**: Implement responsive design to ensure the website adapts and functions well on various screen sizes, including mobile devices, enhancing accessibility and user satisfaction.
+3. **Scalability**:
+    - **Assumption**: Initial configuration consists of one master node and one worker node due to the expected limited user base.
+    - **Impact**: Possible performance degradation and application downtimes with user base growth.
+    - **Mitigation**: Provisioning additional master and worker nodes to create replicas and scale the application for handling increased traffic while maintaining high availability.
+4. **Admin Panel**:
+    - **Assumption**: No admin panel is required for creating or updating Doctors and Services, resulting in a lack of corresponding endpoints.
+    - **Impact**: Doctors and Services remain static without the ability to update or manage them.
+    - **Mitigation**: Development of a web admin panel when needed to facilitate updates and modifications, ensuring adaptability for future requirements.
 
 ## 7. Conclusion
 
